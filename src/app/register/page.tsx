@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { authService } from "@/services/auth";
 import styles from "./page.module.css";
 
 export default function Register() {
@@ -13,19 +13,32 @@ export default function Register() {
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        setTimeout(() => {
+        setError(null);
+
+        try {
+            await authService.register({
+                name: fullName,
+                email,
+                password
+            });
+
+            // Redirect to login after successful registration
+            router.push("/login?registered=true");
+        } catch (err: any) {
+            console.error("Registration error:", err);
+            setError(err.response?.data?.detail || "Erro ao criar conta. Tente novamente.");
+        } finally {
             setIsLoading(false);
-            router.push("/projects");
-        }, 1200);
+        }
     };
 
     return (
         <div className={styles.container}>
-
             <div className={styles.logoContainerWrapper}>
                 <img
                     src="/assets/logo.png"
@@ -36,20 +49,34 @@ export default function Register() {
 
             <div className={`${styles.loginCard} animate-fade-in`}>
                 <div className={styles.header}>
-                    <h1 className={styles.title}>Create Account</h1>
-                    <p className={styles.subtitle}>Fill in your details to get started</p>
+                    <h1 className={styles.title}>Criar Conta</h1>
+                    <p className={styles.subtitle}>Preencha seus dados para começar</p>
                 </div>
+
+                {error && (
+                    <div style={{
+                        backgroundColor: '#fee2e2',
+                        color: '#b91c1c',
+                        padding: '0.75rem',
+                        borderRadius: '8px',
+                        marginBottom: '1rem',
+                        fontSize: '0.85rem',
+                        fontWeight: 500
+                    }}>
+                        {error}
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit} className={styles.formContainer}>
                     <div className={styles.inputGroup}>
-                        <label htmlFor="fullName" className={styles.label}>Full Name</label>
+                        <label htmlFor="fullName" className={styles.label}>Nome Completo</label>
                         <div className={styles.inputWrapper}>
                             <input
                                 id="fullName"
                                 type="text"
                                 value={fullName}
                                 onChange={(e) => setFullName(e.target.value)}
-                                placeholder="John Doe"
+                                placeholder="Seu nome"
                                 required
                                 className={styles.input}
                             />
@@ -57,14 +84,14 @@ export default function Register() {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label htmlFor="email" className={styles.label}>Email Address</label>
+                        <label htmlFor="email" className={styles.label}>E-mail</label>
                         <div className={styles.inputWrapper}>
                             <input
                                 id="email"
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                placeholder="name@example.com"
+                                placeholder="exemplo@email.com"
                                 required
                                 className={styles.input}
                             />
@@ -72,7 +99,7 @@ export default function Register() {
                     </div>
 
                     <div className={styles.inputGroup}>
-                        <label htmlFor="password" className={styles.label}>Password</label>
+                        <label htmlFor="password" className={styles.label}>Senha</label>
                         <div className={styles.inputWrapper}>
                             <input
                                 id="password"
@@ -87,9 +114,8 @@ export default function Register() {
                                 type="button"
                                 className={styles.eyeButton}
                                 onClick={() => setShowPassword(!showPassword)}
-                                aria-label={showPassword ? "Hide password" : "Show password"}
+                                aria-label={showPassword ? "Esconder senha" : "Mostrar senha"}
                             >
-                                {/* Ícone de Visibilidade */}
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     {showPassword ? (
                                         <>
@@ -108,7 +134,6 @@ export default function Register() {
                         </div>
                     </div>
 
-                    {/* Spacer that was taking up the "remember me" row in login */}
                     <div style={{ marginTop: "0.25rem", marginBottom: "0.25rem" }} />
 
                     <button
@@ -119,14 +144,14 @@ export default function Register() {
                         {isLoading ? (
                             <span className={styles.loadingSpinner} />
                         ) : (
-                            "Create Account"
+                            "Criar Minha Conta"
                         )}
                     </button>
                 </form>
 
                 <div className={styles.footer}>
-                    <span className={styles.footerText}>Already have an account?</span>
-                    <Link href="/login" className={styles.signUpLink}>Sign In</Link>
+                    <span className={styles.footerText}>Já tem uma conta?</span>
+                    <Link href="/login" className={styles.signUpLink}>Fazer Login</Link>
                 </div>
             </div>
         </div>

@@ -2,13 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, Suspense } from "react";
 import styles from "./page.module.css";
 import { authService } from "@/services/auth";
 
-export default function Login() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isRegistered = searchParams.get('registered') === 'true';
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -49,7 +52,6 @@ export default function Login() {
 
   return (
     <div className={styles.container}>
-
       <div className={styles.logoContainerWrapper}>
         <img
           src="/assets/logo.png"
@@ -60,9 +62,24 @@ export default function Login() {
 
       <div className={`${styles.loginCard} animate-fade-in`}>
         <div className={styles.header}>
-          <h1 className={styles.title}>Sign In</h1>
-          <p className={styles.subtitle}>Enter your credentials to access your account</p>
+          <h1 className={styles.title}>Entrar</h1>
+          <p className={styles.subtitle}>Insira suas credenciais para acessar sua conta</p>
         </div>
+
+        {isRegistered && !error && (
+          <div style={{
+            backgroundColor: '#f0fdf4',
+            color: '#166534',
+            padding: '0.75rem',
+            borderRadius: '8px',
+            marginBottom: '1rem',
+            fontSize: '0.85rem',
+            fontWeight: 500,
+            border: '1px solid #bbf7d0'
+          }}>
+            Conta criada com sucesso! Faça login para continuar.
+          </div>
+        )}
 
         {error && (
           <div className={styles.errorMessage}>
@@ -72,14 +89,14 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className={styles.formContainer}>
           <div className={styles.inputGroup}>
-            <label htmlFor="email" className={styles.label}>Email Address</label>
+            <label htmlFor="email" className={styles.label}>E-mail</label>
             <div className={styles.inputWrapper}>
               <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@example.com"
+                placeholder="exemplo@email.com"
                 required
                 className={styles.input}
               />
@@ -87,7 +104,7 @@ export default function Login() {
           </div>
 
           <div className={styles.inputGroup}>
-            <label htmlFor="password" className={styles.label}>Password</label>
+            <label htmlFor="password" className={styles.label}>Senha</label>
             <div className={styles.inputWrapper}>
               <input
                 id="password"
@@ -102,9 +119,8 @@ export default function Login() {
                 type="button"
                 className={styles.eyeButton}
                 onClick={() => setShowPassword(!showPassword)}
-                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-label={showPassword ? "Esconder senha" : "Mostrar senha"}
               >
-                {/* Ícone de Visibilidade */}
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   {showPassword ? (
                     <>
@@ -131,9 +147,9 @@ export default function Login() {
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
               />
-              <span className={styles.checkboxText}>Remember me</span>
+              <span className={styles.checkboxText}>Lembrar de mim</span>
             </label>
-            <a href="#" className={styles.forgotPassword}>Forgot password?</a>
+            <a href="#" className={styles.forgotPassword}>Esqueceu a senha?</a>
           </div>
 
           <button
@@ -144,16 +160,24 @@ export default function Login() {
             {isLoading ? (
               <span className={styles.loadingSpinner} />
             ) : (
-              "Sign In"
+              "Entrar"
             )}
           </button>
         </form>
 
         <div className={styles.footer}>
-          <span className={styles.footerText}>Don't have an account?</span>
-          <Link href="/register" className={styles.signUpLink}>Create one</Link>
+          <span className={styles.footerText}>Ainda não tem uma conta?</span>
+          <Link href="/register" className={styles.signUpLink}>Criar uma agora</Link>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Login() {
+  return (
+    <Suspense fallback={<div>Carregando...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }
