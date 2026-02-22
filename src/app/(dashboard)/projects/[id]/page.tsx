@@ -1,9 +1,10 @@
 "use client";
 
 import { use } from 'react';
+import { useRouter } from 'next/navigation';
 import useSWR from 'swr';
 import Link from 'next/link';
-import { FileText, Download, TrendingUp, ChevronRight, Loader2, AlertCircle } from 'lucide-react';
+import { FileText, Download, TrendingUp, ChevronRight, ChevronLeft, Loader2, AlertCircle } from 'lucide-react';
 import styles from './page.module.css';
 import { projectsService } from '@/services/projects';
 
@@ -32,6 +33,7 @@ function ScoreColumn({ section_name, score }: { section_name: string; score: num
 
 export default function ProjectAnalysisPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = use(params);
+    const router = useRouter();
 
     const { data: analysis, error, isLoading } = useSWR(
         `/projects/${id}/analysis`,
@@ -62,15 +64,19 @@ export default function ProjectAnalysisPage({ params }: { params: Promise<{ id: 
 
     return (
         <div className={styles.pageGrid}>
-
             {/* ── MAIN COLUMN ─────────────────────────────────── */}
             <div className={styles.mainCol}>
 
                 {/* Compact header */}
                 <div className={styles.mainHeader}>
-                    <div>
-                        <h1 className={styles.pageTitle}>Análise do Plano</h1>
-                        <p className={styles.pageSubtitle}>Resumo executivo e scores gerados por IA.</p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <button className={styles.backBtn} onClick={() => router.back()}>
+                            <ChevronLeft size={18} />
+                        </button>
+                        <div>
+                            <h1 className={styles.pageTitle}>Análise do Plano</h1>
+                            <p className={styles.pageSubtitle}>Resumo executivo e scores gerados por IA.</p>
+                        </div>
                     </div>
                     <div className={styles.overallPill} style={{ borderColor: scoreColor(overall) + '60' }}>
                         <span className={styles.overallValue} style={{ color: scoreColor(overall) }}>{overall}</span>

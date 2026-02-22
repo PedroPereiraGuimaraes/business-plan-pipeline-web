@@ -1,23 +1,75 @@
-.layoutContainer {
+.layoutRoot {
     display: flex;
+    flex-direction: column;
     height: 100vh;
     background-color: #f5f7f9;
+}
+
+.header {
+    height: 72px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem 0 0;
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    z-index: 100;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    height: 100%;
+}
+
+.headerLogoSection {
+    width: 240px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.headerBackBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--foreground-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    font-family: inherit;
+}
+
+.headerBackBtn:hover {
+    background-color: #f1f5f9;
+    color: var(--foreground);
+    border-color: #cbd5e1;
+}
+
+.layoutContainer {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
 }
 
 .sidebar {
     width: 240px;
     background-color: #ffffff;
-    border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
     padding: 1.5rem 1rem;
-}
-
-.sidebarLogo {
-    margin-bottom: 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .navMenu {
@@ -32,7 +84,7 @@
     align-items: center;
     gap: 0.75rem;
     padding: 0.65rem 1rem;
-    border-radius: var(--radius-md);
+    border-radius: 8px;
     color: var(--foreground-muted);
     font-weight: 500;
     font-size: 0.95rem;
@@ -47,29 +99,18 @@
 .navItemActive {
     background-color: #f0fdf4;
     color: #166534;
+    border-radius: 8px;
 }
 
 .activeIcon {
     color: #166534;
 }
 
-
 .mainContent {
     flex: 1;
     display: flex;
     flex-direction: column;
-    height: 100vh;
     overflow: hidden;
-}
-
-.header {
-    min-height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2rem;
-    background-color: #ffffff;
-    border-bottom: 1px solid var(--border);
 }
 
 .breadcrumb {
@@ -113,7 +154,7 @@
     width: 40px;
     height: 40px;
     background-color: #e2e8f0;
-    border-radius: var(--radius-sm);
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;

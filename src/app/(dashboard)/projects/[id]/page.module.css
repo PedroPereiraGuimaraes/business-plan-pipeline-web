@@ -16,6 +16,29 @@
     overflow: hidden;
 }
 
+.backBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    /* Square with rounded corners */
+    color: var(--foreground-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.backBtn:hover {
+    background-color: #f1f5f9;
+    color: var(--foreground);
+    border-color: #cbd5e1;
+}
+
+
 .mainHeader {
     display: flex;
     align-items: center;

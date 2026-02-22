@@ -3,6 +3,7 @@ import api from '@/lib/api';
 export interface Project {
     id: string;          // UUID string from the API
     name: string;
+    title?: string;
     description?: string;
     main_sector?: string;
     business_model?: string;
