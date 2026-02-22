@@ -9,8 +9,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Business Plan Pipeline | Login",
-  description: "Manage your business plans efficiently with our premium platform.",
+  title: "Business Plan Pipeline | Transforme suas idéias em Planos de Sucesso",
+  description: "A inteligência artificial mais avançada para estruturação de novos negócios e consultoria estratégica.",
 };
 
 export default function RootLayout({
