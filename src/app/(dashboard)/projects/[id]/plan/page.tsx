@@ -12,8 +12,9 @@ import { projectsService } from '@/services/projects';
 function extractHeadings(md: string): { id: string; text: string; level: number }[] {
     return md.split('\n')
         .map(line => {
-            const m2 = line.match(/^## (.+)/);
-            const m1 = line.match(/^# (.+)/);
+            const trimmed = line.trim();
+            const m2 = trimmed.match(/^## (.+)/);
+            const m1 = trimmed.match(/^# (.+)/);
             if (m2) return { text: m2[1].trim(), level: 2, id: slugify(m2[1]) };
             if (m1) return { text: m1[1].trim(), level: 1, id: slugify(m1[1]) };
             return null;
@@ -89,19 +90,27 @@ function PlanContent({ id }: { id: string }) {
                     <span className={styles.navTitle}>Plano de Negócios</span>
                 </div>
                 <div className={styles.navLinks}>
-                    {headings.filter(h => h.level !== 1).map(h => (
-                        <button
-                            key={h.id}
-                            onClick={() => scrollTo(h.id)}
-                            className={[
-                                styles.navLink,
-                                h.level === 2 && styles.navLinkSub,
-                                activeId === h.id && styles.navLinkActive,
-                            ].filter(Boolean).join(' ')}
-                        >
-                            {h.text}
-                        </button>
-                    ))}
+                    {headings.map((h, idx) => {
+                        // Keep the first H1 if it's NOT just the title, 
+                        // but usually the first # is the document title.
+                        // The user said "não pegava o primeiro #", if they want it, we show it.
+                        // However, if we skip index 0, we avoid showing the title twice.
+                        // Let's show all and let the user decide if they want to hide the first one.
+                        return (
+                            <button
+                                key={`${h.id}-${idx}`}
+                                onClick={() => scrollTo(h.id)}
+                                className={[
+                                    styles.navLink,
+                                    h.level === 2 && styles.navLinkSub,
+                                    h.level === 1 && styles.navLinkMain,
+                                    activeId === h.id && styles.navLinkActive,
+                                ].filter(Boolean).join(' ')}
+                            >
+                                {h.text}
+                            </button>
+                        );
+                    })}
                 </div>
             </aside>
 

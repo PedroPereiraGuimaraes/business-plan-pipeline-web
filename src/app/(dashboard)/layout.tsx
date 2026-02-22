@@ -2,7 +2,8 @@
 
 import { usePathname, useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { FolderOpen, GraduationCap, User as UserIcon, ChevronRight, ChevronLeft, Crown } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { FolderOpen, GraduationCap, User as UserIcon, ChevronRight, ChevronLeft, Crown, LogOut } from 'lucide-react';
 import styles from './layout.module.css';
 import { UserProvider, useUser } from '@/contexts/UserContext';
 import useSWR from 'swr';
@@ -13,6 +14,8 @@ function InnerLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
     const params = useParams<{ id?: string }>();
     const { user, isLoading } = useUser();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     // Fetch project if we are on a project page
     const { data: project } = useSWR(
@@ -22,8 +25,23 @@ function InnerLayout({ children }: { children: React.ReactNode }) {
 
     const isProjetos = pathname.includes('/projects');
     const isConsultoria = pathname.includes('/consulting');
-    const isProjectDetail = !!params?.id;
     const isNew = pathname.includes('/new');
+
+    // Close dropdown on click outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        window.location.href = '/login'; // Use window.location to force full reload and clear state
+    };
 
     if (isLoading) {
         return <div style={{ display: 'flex', height: '100vh', alignItems: 'center', justifyContent: 'center' }}>Carregando...</div>;
@@ -70,21 +88,32 @@ function InnerLayout({ children }: { children: React.ReactNode }) {
                         </div>
                     </div>
 
-                    <div className={styles.userSection}>
-                        <div className={styles.userInfo}>
-                            <span className={styles.userName}>{user?.name}</span>
-                            <span className={styles.userRole}>
-                                {user?.access_level === 'premium' ? (
-                                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#eab308' }}>
-                                        <Crown size={12} strokeWidth={2} />
-                                        Premium
-                                    </span>
-                                ) : "Plano Free"}
-                            </span>
+                    <div className={styles.userSectionContainer} ref={dropdownRef}>
+                        <div className={styles.userSection} onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+                            <div className={styles.userInfo}>
+                                <span className={styles.userName}>{user?.name}</span>
+                                <span className={styles.userRole}>
+                                    {user?.access_level === 'premium' ? (
+                                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#eab308' }}>
+                                            <Crown size={12} strokeWidth={2} />
+                                            Premium
+                                        </span>
+                                    ) : "Plano Free"}
+                                </span>
+                            </div>
+                            <div className={styles.userAvatar}>
+                                <UserIcon size={18} strokeWidth={1.5} />
+                            </div>
                         </div>
-                        <div className={styles.userAvatar}>
-                            <UserIcon size={18} strokeWidth={1.5} />
-                        </div>
+
+                        {isDropdownOpen && (
+                            <div className={styles.userDropdown}>
+                                <button className={styles.logoutBtn} onClick={handleLogout}>
+                                    <LogOut size={16} strokeWidth={2} />
+                                    Sair
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </header>
             )}

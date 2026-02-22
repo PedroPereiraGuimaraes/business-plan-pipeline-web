@@ -10,9 +10,9 @@
     background-color: var(--background);
 }
 
-/* Hide the first H1 (the plan title) */
+/* Show all H1s now that they are used for sections */
 .prose h1:first-child {
-    display: none;
+    display: block;
 }
 
 .backBtn {
@@ -88,14 +88,14 @@
     background: none;
     border: none;
     border-radius: var(--radius-md);
-    padding: 0.65rem 1rem;
-    font-size: 0.95rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
     font-weight: 500;
     color: var(--foreground-muted);
     cursor: pointer;
     transition: all 0.2s ease;
     font-family: inherit;
-    line-height: 1.3;
+    line-height: 1.25;
 }
 
 .navLink:hover {
@@ -103,9 +103,19 @@
     color: var(--foreground);
 }
 
+.navLinkMain {
+    padding-left: 0.75rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--foreground);
+    margin-top: 0.65rem;
+}
+
 .navLinkSub {
-    padding-left: 1.75rem;
-    font-size: 0.85rem;
+    padding-left: 1.4rem;
+    font-size: 0.82rem;
+    color: #64748b;
+    margin-top: 0.1rem;
 }
 
 .navLinkActive {
