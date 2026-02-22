@@ -1,0 +1,125 @@
+.layoutContainer {
+    display: flex;
+    height: 100vh;
+    background-color: #f5f7f9;
+}
+
+.sidebar {
+    width: 240px;
+    background-color: #ffffff;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+}
+
+.sidebarLogo {
+    margin-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navMenu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 1rem;
+    border-radius: var(--radius-md);
+    color: var(--foreground-muted);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.navItem:hover {
+    background-color: #f1f5f9;
+    color: var(--foreground);
+}
+
+.navItemActive {
+    background-color: #f0fdf4;
+    color: #166534;
+}
+
+.activeIcon {
+    color: #166534;
+}
+
+
+.mainContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.header {
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--border);
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--foreground-muted);
+}
+
+.breadcrumbActive {
+    color: var(--foreground);
+    font-weight: 600;
+}
+
+.userSection {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 1.3;
+}
+
+.userName {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--foreground);
+}
+
+.userRole {
+    font-size: 0.8rem;
+    color: var(--foreground-muted);
+}
+
+.userAvatar {
+    width: 40px;
+    height: 40px;
+    background-color: #e2e8f0;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #475569;
+}
+
+.contentArea {
+    padding: 3rem;
+    width: 100%;
+}
