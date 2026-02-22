@@ -58,7 +58,8 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .header {
@@ -120,6 +121,15 @@
 }
 
 .contentArea {
-    padding: 3rem;
+    flex: 1;
+    padding: 2rem 3rem;
     width: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.contentAreaCentered {
+    justify-content: center;
+    align-items: center;
 }

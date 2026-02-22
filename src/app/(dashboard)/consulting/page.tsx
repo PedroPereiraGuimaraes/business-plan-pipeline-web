@@ -8,7 +8,7 @@ import { consultingService, ConsultingRequest } from '@/services/consulting';
 export default function ConsultingHome() {
     const { data: consultingList = [], error, isLoading, mutate } = useSWR('/consulting', consultingService.getAll);
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = async (id: string) => {
         if (!confirm("Tem certeza que deseja deletar esta consultoria?")) return;
         try {
             await consultingService.delete(id);

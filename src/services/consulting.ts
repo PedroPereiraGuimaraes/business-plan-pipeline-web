@@ -1,7 +1,7 @@
 import api from '@/lib/api';
 
 export interface ConsultingRequest {
-    id: number;
+    id: string;
     title: string;
     description?: string;
     status: string;
@@ -19,7 +19,7 @@ export const consultingService = {
         return response.data;
     },
 
-    delete: async (id: number): Promise<void> => {
+    delete: async (id: string): Promise<void> => {
         await api.delete(`/consulting/${id}`);
     }
 };

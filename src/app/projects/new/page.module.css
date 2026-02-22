@@ -1,0 +1,222 @@
+/* Full-page wrapper – no sidebar */
+.page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: var(--background);
+    position: relative;
+    padding: 2rem;
+}
+
+/* ─── Back button – fixed top-left ─── */
+.backButton {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--foreground-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.backButton:hover:not(:disabled) {
+    background-color: #f1f5f9;
+    color: var(--foreground);
+    transform: translateX(-2px);
+}
+
+.backButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ─── Centered content container ─── */
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 520px;
+    gap: 1.5rem;
+}
+
+/* ─── Progress ─── */
+.progressArea {
+    width: 100%;
+}
+
+.progressRow {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--foreground-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
+}
+
+.progressPerc {
+    color: var(--primary);
+}
+
+.progressBar {
+    width: 100%;
+    height: 3px;
+    background-color: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background-color: var(--primary);
+    transition: width 0.4s ease;
+    border-radius: 4px;
+}
+
+/* ─── Title ─── */
+.titleArea {
+    text-align: left;
+}
+
+.title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--foreground);
+    margin-bottom: 0.35rem;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: var(--foreground-muted);
+    line-height: 1.5;
+}
+
+/* ─── Card ─── */
+.card {
+    background-color: var(--surface);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* ─── Inputs ─── */
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+.input,
+.select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.2s ease;
+    background-color: #fafafa;
+    color: var(--foreground);
+    font-family: inherit;
+}
+
+.textarea {
+    width: 100%;
+    min-height: 140px;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    outline: none;
+    resize: vertical;
+    transition: all 0.2s ease;
+    background-color: #fafafa;
+    color: var(--foreground);
+    font-family: inherit;
+    line-height: 1.6;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+    border-color: var(--primary);
+    background-color: var(--surface);
+    box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+/* ─── Save indicators ─── */
+.savingText {
+    font-size: 0.75rem;
+    color: var(--foreground-muted);
+    align-self: flex-end;
+}
+
+.savedText {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: var(--primary);
+    align-self: flex-end;
+    font-weight: 600;
+}
+
+/* ─── Primary button ─── */
+.primaryButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    height: 48px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    margin-top: 0.25rem;
+}
+
+.primaryButton:hover:not(:disabled) {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.primaryButton:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* ─── Helper text ─── */
+.helperText {
+    text-align: center;
+    font-size: 0.72rem;
+    color: #94a3b8;
+    margin: 0;
+}

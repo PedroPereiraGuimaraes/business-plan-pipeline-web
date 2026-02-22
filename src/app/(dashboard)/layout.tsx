@@ -37,43 +37,45 @@ function InnerLayout({ children }: { children: React.ReactNode }) {
             </aside>
 
             <main className={styles.mainContent}>
-                <header className={styles.header}>
-                    <div className={styles.breadcrumb}>
-                        {isProjetos && (
-                            <>
-                                <span>Projetos</span>
-                                <ChevronRight size={16} strokeWidth={1.5} />
-                                <span className={styles.breadcrumbActive}>Home</span>
-                            </>
-                        )}
-                        {isConsultoria && (
-                            <>
-                                <span>Consultoria</span>
-                                <ChevronRight size={16} strokeWidth={1.5} />
-                                <span className={styles.breadcrumbActive}>Home</span>
-                            </>
-                        )}
-                    </div>
-
-                    <div className={styles.userSection}>
-                        <div className={styles.userInfo}>
-                            <span className={styles.userName}>{user?.name}</span>
-                            <span className={styles.userRole}>
-                                {user?.access_level === 'premium' ? (
-                                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#eab308' }}>
-                                        <Crown size={12} strokeWidth={2} />
-                                        Premium
-                                    </span>
-                                ) : "Plano Free"}
-                            </span>
+                {!pathname.includes('/new') && (
+                    <header className={styles.header}>
+                        <div className={styles.breadcrumb}>
+                            {isProjetos && (
+                                <>
+                                    <span>Projetos</span>
+                                    <ChevronRight size={16} strokeWidth={1.5} />
+                                    <span className={styles.breadcrumbActive}>{pathname.includes('/new') ? 'Novo Projeto' : 'Home'}</span>
+                                </>
+                            )}
+                            {isConsultoria && (
+                                <>
+                                    <span>Consultoria</span>
+                                    <ChevronRight size={16} strokeWidth={1.5} />
+                                    <span className={styles.breadcrumbActive}>{pathname.includes('/new') ? 'Nova Consultoria' : 'Home'}</span>
+                                </>
+                            )}
                         </div>
-                        <div className={styles.userAvatar}>
-                            <UserIcon size={18} strokeWidth={1.5} />
-                        </div>
-                    </div>
-                </header>
 
-                <div className={styles.contentArea}>
+                        <div className={styles.userSection}>
+                            <div className={styles.userInfo}>
+                                <span className={styles.userName}>{user?.name}</span>
+                                <span className={styles.userRole}>
+                                    {user?.access_level === 'premium' ? (
+                                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#eab308' }}>
+                                            <Crown size={12} strokeWidth={2} />
+                                            Premium
+                                        </span>
+                                    ) : "Plano Free"}
+                                </span>
+                            </div>
+                            <div className={styles.userAvatar}>
+                                <UserIcon size={18} strokeWidth={1.5} />
+                            </div>
+                        </div>
+                    </header>
+                )}
+
+                <div className={`${styles.contentArea} ${pathname.includes('/new') ? styles.contentAreaCentered : ''}`}>
                     {children}
                 </div>
             </main>

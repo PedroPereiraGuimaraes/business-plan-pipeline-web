@@ -1,11 +1,18 @@
 import api from '@/lib/api';
 
 export interface Project {
-    id: number;
+    id: string;          // UUID string from the API
     name: string;
     description?: string;
+    main_sector?: string;
+    business_model?: string;
     status: string;
     created_at?: string;
+}
+
+export interface OnboardingAnswer {
+    question: string;
+    answer: string;
 }
 
 export const projectsService = {
@@ -14,7 +21,7 @@ export const projectsService = {
         return response.data;
     },
 
-    getById: async (id: number): Promise<Project> => {
+    getById: async (id: string): Promise<Project> => {
         const response = await api.get(`/projects/${id}`);
         return response.data;
     },
@@ -24,22 +31,37 @@ export const projectsService = {
         return response.data;
     },
 
-    delete: async (id: number): Promise<void> => {
+    delete: async (id: string): Promise<void> => {
         await api.delete(`/projects/${id}`);
     },
 
-    submitOnboarding: async (id: number, data: any): Promise<any> => {
-        const response = await api.post(`/projects/${id}/onboarding`, data);
+    // GET already-answered questions (to resume onboarding)
+    getOnboarding: async (id: string): Promise<OnboardingAnswer[]> => {
+        const response = await api.get(`/projects/${id}/onboarding`);
         return response.data;
     },
 
-    completeOnboarding: async (id: number): Promise<any> => {
+    // PATCH a single answer by its question label
+    patchAnswer: async (id: string, questionLabel: string, answer: string): Promise<any> => {
+        const response = await api.patch(
+            `/projects/${id}/onboarding/${encodeURIComponent(questionLabel)}`,
+            { answer }
+        );
+        return response.data;
+    },
+
+    completeOnboarding: async (id: string): Promise<any> => {
         const response = await api.post(`/projects/${id}/complete`);
         return response.data;
     },
 
-    getPlan: async (id: number): Promise<any> => {
+    getPlan: async (id: string): Promise<any> => {
         const response = await api.get(`/projects/${id}/plan`);
+        return response.data;
+    },
+
+    getAnalysis: async (id: string): Promise<any> => {
+        const response = await api.get(`/projects/${id}/plan/analysis`);
         return response.data;
     }
 };

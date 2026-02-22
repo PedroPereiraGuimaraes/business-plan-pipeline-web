@@ -1,14 +1,20 @@
 "use client";
 
 import useSWR from 'swr';
-import { Plus, ChevronRight, Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Plus, ChevronRight, Trash2, PlayCircle } from 'lucide-react';
 import styles from './page.module.css';
 import { projectsService, Project } from '@/services/projects';
 
 export default function ProjectsHome() {
+    const router = useRouter();
     const { data: projects = [], error, isLoading, mutate } = useSWR('/projects', projectsService.getAll);
 
-    const handleDelete = async (id: number) => {
+    const isOnboarding = (status: string) => !status || status.toLowerCase().includes('onboarding') || status.toLowerCase().includes('pending');
+    const isReady = (status: string) => status?.toLowerCase().includes('ready') || status?.toLowerCase().includes('complete') || status?.toLowerCase().includes('done');
+
+    const handleDelete = async (id: string) => {
         if (!confirm("Tem certeza que deseja deletar este projeto?")) return;
         try {
             await projectsService.delete(id);
@@ -33,10 +39,10 @@ export default function ProjectsHome() {
                     <h1 className={styles.pageTitle}>Meus Projetos</h1>
                     <p className={styles.pageSubtitle}>Gerencie seus planos de negócios e acompanhe o progresso.</p>
                 </div>
-                <button className={styles.primaryButton}>
+                <Link href="/projects/new" className={styles.primaryButton}>
                     <Plus size={18} strokeWidth={2} />
                     Novo Projeto
-                </button>
+                </Link>
             </div>
 
             <div className={styles.cardsList}>
@@ -55,7 +61,10 @@ export default function ProjectsHome() {
                     </div>
                 ) : (
                     projects.map((project) => (
-                        <div className={styles.card} key={project.id}>
+                        <div className={styles.card} key={project.id}
+                            onClick={() => isReady(project.status) ? router.push(`/projects/${project.id}`) : undefined}
+                            style={{ cursor: isReady(project.status) ? 'pointer' : 'default' }}
+                        >
                             <div className={styles.cardContent}>
                                 <h3 className={styles.cardTitle}>{project.name}</h3>
                                 <p className={styles.cardDescription}>{project.description || "Sem descrição disponível."}</p>
@@ -66,7 +75,23 @@ export default function ProjectsHome() {
                                 <button className={styles.deleteButton} onClick={(e) => { e.stopPropagation(); handleDelete(project.id); }} title="Deletar Projeto">
                                     <Trash2 size={18} strokeWidth={1.5} />
                                 </button>
-                                <button className={styles.arrowButton}><ChevronRight size={18} strokeWidth={1.5} /></button>
+                                {isOnboarding(project.status) ? (
+                                    <button
+                                        className={styles.resumeButton}
+                                        onClick={(e) => { e.stopPropagation(); router.push(`/projects/new?projectId=${project.id}&step=1`); }}
+                                        title="Retomar Onboarding"
+                                    >
+                                        <PlayCircle size={18} strokeWidth={1.5} />
+                                    </button>
+                                ) : isReady(project.status) ? (
+                                    <button className={styles.arrowButton} onClick={(e) => { e.stopPropagation(); router.push(`/projects/${project.id}`); }}>
+                                        <ChevronRight size={18} strokeWidth={1.5} />
+                                    </button>
+                                ) : (
+                                    <button className={styles.arrowButton} disabled>
+                                        <ChevronRight size={18} strokeWidth={1.5} />
+                                    </button>
+                                )}
                             </div>
                         </div>
                     ))

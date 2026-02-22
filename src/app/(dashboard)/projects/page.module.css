@@ -122,6 +122,25 @@
     color: #64748b;
 }
 
+.resumeButton {
+    background-color: transparent;
+    border: none;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.resumeButton:hover {
+    background-color: #f0fdf4;
+    color: var(--primary-hover);
+}
+
 .deleteButton {
     background-color: transparent;
     border: none;
